@@ -1,6 +1,7 @@
 import firebase from "firebase/app"
 import 'firebase/firestore'
 import 'firebase/auth'
+
 var config ={
     apiKey: "AIzaSyChd0amxLIqAP0pLPPq_bAZ9Ev6Xlu7e9k",
     authDomain: "crwn-clothing-9d0a0.firebaseapp.com",
@@ -12,9 +13,36 @@ var config ={
     measurementId: "G-T1P9Q8997W"
   };
   firebase.initializeApp(config)
+  export const  auth =firebase.auth();
+  export const firestore=firebase.firestore();
 
-export const  auth =firebase.auth();
-export const firestore=firebase.firestore();
+export  const  createUserProfile= async (userAuth,additionalData)=>{
+
+  if(!userAuth) return;
+
+const userRef= firestore.doc(`users/${userAuth.uid}`)
+
+const userSnap= await userRef.get();
+if(!userSnap.exists){
+const {displayName, email}=userAuth;
+const createdAt=new Date();
+try {
+ await userRef.set({
+    displayName,
+    email,
+    createdAt,
+    ...additionalData,
+  })
+ 
+} catch (error) {
+  console.log("The error is", error.message)
+}
+}
+return userRef;
+
+}
+
+
  const providor =new firebase.auth.GoogleAuthProvider();
 providor.setCustomParameters({prompt:'select_account'});
 
