@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { ReactComponent as Logo } from "../../assets/crown.svg.svg";
 import "./header.styles.scss";
+import {connect} from "react-redux";
 import {auth} from "../../firebase/firebase.utiils"
 
 const Header = ({currentUser}) => (
@@ -21,7 +22,14 @@ const Header = ({currentUser}) => (
       </Link>
 
       {      currentUser?<div className="option" onClick={()=>{auth.signOut()}}>Signout </div> :<Link className="option" to="/signin">SignIn</Link>}
+      {console.log(currentUser)}
     </div>
   </div>
 );
-export default Header;
+
+const mapStateteToProps=state=>(
+{
+  currentUser:state.user.currentUser
+}
+);
+export default connect(mapStateteToProps)(Header);
