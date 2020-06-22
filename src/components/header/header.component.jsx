@@ -46,7 +46,6 @@ const mapStateteToProps=createStructuredSelector(
 {
   currentUser:selectCurrentUser,
   hidden:selectCartHidden,
-
 }
 );
 export default connect(mapStateteToProps)(Header);
