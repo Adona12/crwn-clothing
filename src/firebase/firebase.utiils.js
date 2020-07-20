@@ -13,6 +13,27 @@ var config ={
     measurementId: "G-T1P9Q8997W"
   };
   firebase.initializeApp(config)
+
+export const convertCollectionsSnapshotToMap=collections=>{
+  const transformedCollection=collections.docs.map(doc=>{
+    const {items,title}=doc.data();
+    return {
+      id:doc.id,
+      routeName:encodeURI(title.toLowerCase()),
+      items,
+      title,
+    
+
+      
+    }
+  });
+ return transformedCollection.reduce((accumulator,collection)=>{
+   accumulator[collection.title.toLowerCase()]=collection;
+   return accumulator;
+  },{})
+
+}
+
   export const  auth =firebase.auth();
   export const firestore=firebase.firestore();
 
@@ -41,10 +62,24 @@ try {
 return userRef;
 
 }
+export const addCollectionAndDocument=async (collectionKey,objectsToAdd)=>{
+const collectionRef=firestore.collection(collectionKey);
+const batch=firestore.batch();
+objectsToAdd.forEach(obj=>{
 
+  const newDocRef=collectionRef.doc();
+  batch.set(newDocRef,obj);
+});
+return await batch.commit();
+};
 
  const providor =new firebase.auth.GoogleAuthProvider();
 providor.setCustomParameters({prompt:'select_account'});
 
 export const SignInWithGoogle=()=>auth.signInWithPopup(providor);
+
+
+
+
+
 export default firebase; 

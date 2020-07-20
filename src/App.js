@@ -14,6 +14,7 @@ import SignInAndSignUp from "./pages/sign-in-and-sign-up/sign-in-and-sign-up.com
 import {setCurrentUser} from "./redux/user/user.action"
 import {selectCurrentUser} from "./redux/user/user.selector"
 
+ 
 
 import {auth, createUserProfile} from "./firebase/firebase.utiils"
 
@@ -22,6 +23,7 @@ class App extends React.Component{
 unsuscribeFromAuth=null;
   componentDidMount(){
     const {setCurrentUser}=this.props
+   
    this.unsuscribeFromAuth= auth.onAuthStateChanged(async userAuth=>{
       // this.setState({currentUser:user});
       if(userAuth){
@@ -60,7 +62,8 @@ unsuscribeFromAuth=null;
   }
 }
 const mapStateToProps=createStructuredSelector({
-  currentUser:selectCurrentUser
+  currentUser:selectCurrentUser,
+ 
 })
 const mapDispatchToProps= dispatch=>(
   {

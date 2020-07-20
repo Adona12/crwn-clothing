@@ -28,9 +28,9 @@ import {clearItemFromCart,removeItem,addItem} from "../../redux/cart/cart.action
  }
 
 
- const mapStateToProps=dispatch=>({
+ const mapDispatchToProps=dispatch=>({
      clearItem:item=>(dispatch(clearItemFromCart(item))),
      removeItem:item=>(dispatch(removeItem(item))),
      addItem:item=>(dispatch(addItem(item)))
  })
-export  default connect(null,mapStateToProps)(CheckoutItem)
+export  default connect(null,mapDispatchToProps)(CheckoutItem)

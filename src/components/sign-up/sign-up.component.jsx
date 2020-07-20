@@ -1,7 +1,7 @@
 import React from "react"
 import FormInput from "../form-input/form-input.component"
 import CustomButton from "../custom-button/custom-button.component"
-import  "./sign-up.styles.scss"
+import  {SignUpComponent,TitleContainer} from "./sign-up.styles"
 import {auth, createUserProfile} from "../../firebase/firebase.utiils"
 
 
@@ -28,7 +28,7 @@ class SignUp extends React.Component{
         }else{
             try {
                 const {user}=await auth.createUserWithEmailAndPassword(email,password);
-               await createUserProfile(user,{ displayName});
+               await createUserProfile(user,{displayName});
                 this.setState({
                     displayName:"",
                     email:"",
@@ -45,8 +45,8 @@ class SignUp extends React.Component{
     }
 render(){
     return(
-        <div className="sign-up">
-            <h1 className="title">I do not have an account</h1>
+        <SignUpComponent>
+            <TitleContainer className="title">I do not have an account</TitleContainer>
             <span>sign up with your email and password</span>
             <form className="sign-up" onSubmit={this.handlesubmit}>
             <FormInput handlechange={this.handleChange} name="displayName" label="Display Name" value={this.state.displayName} type="text" required/>
@@ -56,7 +56,7 @@ render(){
             <FormInput handlechange={this.handleChange} name="confirmPassword" label="Confirm Password" value={this.state.confirmPassword} type="password" required />
             <CustomButton value="submit" type="submit">Sign up</CustomButton>
             </form>
-            </div>
+            </SignUpComponent>
     )
 }
 }
