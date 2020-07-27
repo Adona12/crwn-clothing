@@ -40,21 +40,27 @@ export const convertCollectionsSnapshotToMap=collections=>{
 export  const  createUserProfile= async (userAuth,additionalData)=>{
 
   if(!userAuth) return;
-
+console.log("before")
 const userRef= firestore.doc(`users/${userAuth.uid}`)
-
+console.log("1");
 const userSnap=  userRef.get();
+console.log("2");
 if(!userSnap.exists){
+  console.log("3");
 const {displayName, email}=userAuth;
+console.log("4");
 const createdAt=new Date();
+
 try {
+  console.log(additionalData)
+  console.log(userRef)
  await userRef.set({
     displayName,
     email,
     createdAt,
     ...additionalData,
-  })
- 
+  }).catch(error=>console.log(error))
+    console.log("beforre2")
 } catch (error) {
   console.log("The error is", error.message)
 }
@@ -72,11 +78,19 @@ objectsToAdd.forEach(obj=>{
 });
 return await batch.commit();
 };
+export const getCurrentUser=()=>{
+  return new Promise((resolve,reject)=>{
+    const unsubscribe= auth.onAuthStateChanged(userAuth=>{
+ unsubscribe();
+ resolve(userAuth);
+     },reject)
+  })
+}
 
- const providor =new firebase.auth.GoogleAuthProvider();
-providor.setCustomParameters({prompt:'select_account'});
+ export const googleProvidor =new firebase.auth.GoogleAuthProvider();
+ googleProvidor.setCustomParameters({prompt:'select_account'});
 
-export const SignInWithGoogle=()=>auth.signInWithPopup(providor);
+export const SignInWithGoogle=()=>auth.signInWithPopup(googleProvidor);
 
 
 
