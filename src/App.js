@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import {Route,Redirect} from "react-router-dom"
 import {connect} from "react-redux";
 import {createStructuredSelector} from "reselect"
@@ -17,29 +17,23 @@ import {selectCurrentUser} from "./redux/user/user.selector"
  
 
 
-class App extends React.Component{
+const App =({checkUserSession,currentUser}) =>{
  
-unsuscribeFromAuth=null;
-  componentDidMount(){
-    const{checkUserSession} =this.props;
-    checkUserSession();
-  }
-  componentWillUnmount(){
-     //this.unsubscribeFromAuth();
-  }
+useEffect(()=>{
+  checkUserSession();
+},[checkUserSession])
 
-  render(){
   return (
     <div >
       <Header/>
       <Route exact path="/" component={Homepage}/>
    <Route  path='/shop' component={Shop}/>
    <Route exact path='/checkout' component={checkoutPage}/>
-   <Route exact path='/signin' render={()=>this.props.currentUser?(<Redirect to='/'/>):(<SignInAndSignUp/>)} />
+   <Route exact path='/signin' render={()=>currentUser?(<Redirect to='/'/>):(<SignInAndSignUp/>)} />
     </div>
   );
   }
-}
+
 const mapDispatchToProps=dispatch=>(
   {
     checkUserSession:()=>dispatch(checkUserSession())
