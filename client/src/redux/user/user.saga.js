@@ -6,10 +6,10 @@ import {SignOutSuccess,SignOutFailure}  from "./user.action";
 
 export function* signIn(user,additionalData) {
     try {
-console.log("again")
+
         const userRef = yield call(createUserProfile, user,additionalData);
         const userSnapshot = yield userRef.get();
-      console.log("last")
+
         yield put(SignInSuccess({ id: userSnapshot.id, ...userSnapshot.data() }));
     } catch (error) {
         yield put(SignInFailure(error.message))
@@ -59,7 +59,7 @@ export function* SignOutStart(){
 }
 export function* signUpStart({payload:{email,password,displayName}}){
 try {
-    console.log("here")
+ 
     const {user}=yield  auth.createUserWithEmailAndPassword(email,password);
     yield put(SignUpSuccess({user,additionalData:{displayName}}))
    
@@ -69,7 +69,7 @@ try {
 }
 }
 export function* signInAfterSignUp({payload:{user,additionalData}}){
-    console.log("some")
+    
   yield call(signIn,user,additionalData)
 }
 export function* onGoogleSignInStart() {
